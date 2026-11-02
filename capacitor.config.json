@@ -1,6 +1,5 @@
-
 "appId": "com.worldmind.ai",
-"appName": "WorldMind AI",
-"webDir": ".",
-"bundledWebRuntime": false
+  "appName": "WorldMind AI",
+  "webDir": ".",
+  "bundledWebRuntime": false
 }
