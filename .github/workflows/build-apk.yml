@@ -21,17 +21,7 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: 22
-
-      - name: Install dependencies
-        run: npm install
-     - name: Prepare web files
-        run: |
-          mkdir -p www
-          cp index.html style.css script.js www/
-     - name: Build Android project
-        run: |
-          npx cap add android
-          npx cap sync android
+          cache: npm
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -39,14 +29,28 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Build APK
+      - name: Install dependencies
+        run: npm install
+
+      - name: Prepare web files
+        run: |
+          mkdir -p www
+          cp index.html style.css script.js www/
+
+      - name: Add Android platform
+        run: npx cap add android
+
+      - name: Sync Android project
+        run: npx cap sync android
+
+      - name: Build debug APK
         working-directory: android
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug
 
       - name: Upload APK
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: WorldMind-AI-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
