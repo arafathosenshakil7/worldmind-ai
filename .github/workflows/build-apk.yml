@@ -24,8 +24,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Build Android project
+     - name: Prepare web files
+        run: |
+          mkdir -p www
+          cp index.html style.css script.js www/
+     - name: Build Android project
         run: |
           npx cap add android
           npx cap sync android
