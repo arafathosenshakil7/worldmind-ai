@@ -11,37 +11,29 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          java-version: '21'
+          node-version: 20
           
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
           
       - name: Install dependencies
         run: npm install --legacy-peer-deps
           
       - name: Build web
         run: |
-          npm run build || npm run dev:build || echo "No build script"
+          npm run build || echo "No build script"
           ls -la
-          
-      - name: Fix web assets folder
+
+      - name: Fix www folder
         run: |
-          echo "Checking for build output..."
-          if [ -d "dist" ]; then echo "Found dist"; ls dist; fi
-          if [ -d "build" ]; then echo "Found build"; ls build; fi
-          if [ -d "www" ]; then echo "Found www"; fi
-          
-          # Create www if not exists and copy build output to it
           mkdir -p www
-          if [ -d "dist" ]; then cp -r dist/* www/ || true; fi
-          if [ -d "build" ]; then cp -r build/* www/ || true; fi
-          
-          # If www still empty, create a basic index.html
+          if [ -d "dist" ]; then cp -r dist/* www/; fi
+          if [ -d "build" ]; then cp -r build/* www/; fi
           if [ ! -f "www/index.html" ]; then
-            echo '<html><body><h1>WorldMind AI</h1><script>window.location.href="/"</script></body></html>' > www/index.html
+            echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>WorldMind AI</title></head><body><h1>WorldMind AI</h1></body></html>' > www/index.html
           fi
           ls -la www/
 
