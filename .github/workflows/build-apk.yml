@@ -1,31 +1,40 @@
 name: Build WorldMind AI APK
-
 on:
-  workflow_dispatch:
+  workflow_dispatch
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
+          
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
+          
       - name: Install dependencies
         run: npm install
+
+      - name: Build web
+        run: npm run build
+
       - name: Add Android platform
         run: npx cap add android || true
-      - name: Copy web assets
-        run: npx cap copy
+
+      - name: Sync assets
+        run: npx cap sync android
+
       - name: Build APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
