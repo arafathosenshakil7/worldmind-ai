@@ -3,72 +3,84 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f1827">
 <title>WorldMind AI - Your Intelligent AI Assistant</title>
-<link rel="stylesheet" href="style.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:sans-serif;background:#0f1827;color:white}
+.header{background:#1e293b;padding:15px;text-align:center}
+.logo{font-size:22px;font-weight:bold}
+.layout{max-width:800px;margin:auto;padding:15px}
+.dash-card{background:#1e293b;padding:12px;border-radius:12px;margin:8px 0}
+.chat-messages{background:#1e293b;border-radius:12px;padding:12px;min-height:250px;max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:85%;padding:10px 14px;border-radius:15px}
+.user{background:#2563eb;align-self:flex-end}
+.ai{background:#334155;align-self:flex-start}
+.chat-form{display:flex;gap:8px;margin-top:10px}
+.chat-form input{flex:1;padding:12px;border-radius:20px;border:none;outline:none}
+.chat-form button{padding:12px 18px;border:none;border-radius:20px;background:#2563eb;color:white;font-weight:bold}
+.feature-card{background:#1e293b;padding:12px;border-radius:12px;margin:8px 0}
+footer{text-align:center;padding:15px;color:#94a3b8;font-size:13px}
+</style>
 </head>
 <body>
-
 <header class="header">
-  <div class="logo">🌍 WorldMind AI</div>
-  <p>Your Intelligent AI Assistant</p>
-  <button id="menuBtn">☰</button>
+<div class="logo">🌍 WorldMind AI</div>
+<p>Your Intelligent AI Assistant</p>
 </header>
-
 <div class="layout">
-  <aside class="sidebar" id="sidebar">
-    <button id="newChatBtn">+ New Chat</button>
-    <div id="chatList"></div>
-    <button id="settingsBtn">⚙️ Settings</button>
-  </aside>
-
-  <main class="container">
-    <section class="welcome">
-      <h1>Welcome to WorldMind AI</h1>
-      <p>Your smart companion for learning, ideas, and knowledge.</p>
-    </section>
-
-    <section class="dashboard">
-      <div class="dash-card">💬 মোট চ্যাট: <b id="totalChats">0</b></div>
-      <div class="dash-card">📝 মোট মেসেজ: <b id="totalMsgs">0</b></div>
-      <div class="dash-card">🌐 ভাষা: <b>Auto (বাংলা / English)</b></div>
-    </section>
-
-    <section class="chat-section">
-      <h2>AI Chat</h2>
-      <div id="chatMessages" class="chat-messages"></div>
-      <form id="chatForm" class="chat-form">
-        <input type="text" id="userInput" placeholder="Type your message... বাংলায় বা English এ লিখো" autocomplete="off" required>
-        <button type="submit">Send</button>
-      </form>
-    </section>
-
-    <section class="features">
-      <h2>Our Features</h2>
-      <div class="feature-grid">
-        <div class="feature-card"><h3>🤖 AI Chat</h3><p>Chat with your intelligent assistant.</p></div>
-        <div class="feature-card"><h3>📚 Knowledge</h3><p>Explore and learn new things.</p></div>
-        <div class="feature-card"><h3>⚡ Smart Tools</h3><p>Discover helpful digital tools.</p></div>
-      </div>
-    </section>
-  </main>
+<h1>Welcome to WorldMind AI</h1>
+<p>Your smart companion for learning, ideas, and knowledge.</p>
+<div class="dash-card">💬 মোট চ্যাট: <b id="totalChats">0</b></div>
+<div class="dash-card">📩 মোট মেসেজ: <b id="totalMsgs">0</b></div>
+<div class="dash-card">🌐 ভাষা: <b>Auto (বাংলা / English)</b></div>
+<h2>💬 AI Chat</h2>
+<div id="chatMessages" class="chat-messages">
+<div class="msg ai">Hi! Ami WorldMind AI. Tomake ki sahajjo korte pari?</div>
 </div>
-
-<div id="settingsModal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Settings</h3>
-    <label>থিম
-      <select id="themeSelect">
-        <option value="dark">Dark</option>
-        <option value="light">Light</option>
-      </select>
-    </label>
-    <button id="clearAllBtn">সব Chat মুছে ফেলো</button>
-    <button id="closeSettings">Close</button>
-  </div>
+<form id="chatForm" class="chat-form">
+<input type="text" id="userInput" placeholder="Type your message... বাংলায় বা English এ লিখো" autocomplete="off">
+<button type="submit">Send</button>
+</form>
+<h2>Our Features</h2>
+<div class="feature-card"><h3>🤖 AI Chat</h3><p>Chat with your intelligent assistant.</p></div>
+<div class="feature-card"><h3>📚 Knowledge</h3><p>Explore and learn new things.</p></div>
+<div class="feature-card"><h3>🧰 Smart Tools</h3><p>Discover helpful digital tools.</p></div>
 </div>
-
 <footer><p>© 2026 WorldMind AI. All rights reserved.</p></footer>
-<script src="script.js"></script>
+<script>
+const API_KEY = "AQ.Ab8RN6JYntmY_iUxyZlkS-WIAuWVoyqoMTb33_iaEsFSeJNKjg";
+let count = 0;
+let chatCount = 1;
+document.getElementById("chatForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+  let inp = document.getElementById("userInput");
+  let text = inp.value.trim();
+  if(!text) return;
+  let box = document.getElementById("chatMessages");
+  box.innerHTML += `<div class="msg user">${text}</div>`;
+  inp.value = "";
+  count++; chatCount++;
+  document.getElementById("totalMsgs").innerText = count;
+  document.getElementById("totalChats").innerText = chatCount;
+  let loading = document.createElement("div");
+  loading.className = "msg ai";
+  loading.innerText = "Likhchi...";
+  box.appendChild(loading);
+  box.scrollTop = box.scrollHeight;
+  try{
+    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({contents:[{parts:[{text:text}]}]})
+    });
+    let data = await res.json();
+    let reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Dukkhito, uttor pelam na. Key ta thik ache kina dekho.";
+    loading.innerText = reply;
+  }catch(err){
+    loading.innerText = "Net / Key problem hocche. Abar try koro.";
+  }
+  box.scrollTop = box.scrollHeight;
+});
+</script>
 </body>
-</html>
+  </html>
