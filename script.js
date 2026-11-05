@@ -1,4 +1,4 @@
-const chatForm = document.getElementById("chatForm");
+িconst chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
 const chatMessages = document.getElementById("chatMessages");
 
@@ -12,12 +12,16 @@ chatForm.addEventListener("submit", function (event) {
   addMessage(message, "user");
   userInput.value = "";
 
-  setTimeout(function () {
-    addMessage(
-      "Thanks for your message! WorldMind AI is currently a UI prototype. Real AI services will be connected in a future update.",
-      "bot"
-    );
-  }, 500);
+  const loading = addMessage('Thinking...', 'bot');
+
+  try {
+    const prompt = "You are WorldMind AI, reply in same language user used. User: " + message;
+    const res = await fetch("https://text.pollinations.ai/" + encodeURIComponent(prompt));
+    const data = await res.text();
+    loading.textContent = data;
+  } catch (e) {
+    loading.textContent = "Sorry, network problem. Try again.";
+  }
 });
 
 function addMessage(text, type) {
