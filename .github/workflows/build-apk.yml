@@ -1,56 +1,31 @@
 name: Build WorldMind AI APK
 on:
-  workflow_dispatch
-
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          
-      - name: Setup Java
-        uses: actions/setup-java@v4
+          node-version: 22
+      - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '21'
-          
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
-          
-      - name: Build web
-        run: |
-          npm run build || echo "No build script"
-          ls -la
-
-      - name: Fix www folder
-        run: |
+          distribution: temurin
+          java-version: 21
+      - run: npm install
+      - run: |
           mkdir -p www
-          if [ -d "dist" ]; then cp -r dist/* www/; fi
-          if [ -d "build" ]; then cp -r build/* www/; fi
-          if [ ! -f "www/index.html" ]; then
-            echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>WorldMind AI</title></head><body><h1>WorldMind AI</h1></body></html>' > www/index.html
-          fi
-          ls -la www/
-
-      - name: Add Android platform
-        run: npx cap add android || true
-
-      - name: Sync assets
-        run: npx cap sync android
-
-      - name: Build APK
+          cp index.html style.css script.js www/
+      - run: npx cap add android
+      - run: npx cap sync android
+      - working-directory: android
         run: |
-          cd android
           chmod +x gradlew
           ./gradlew assembleDebug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: WorldMind-AI-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
