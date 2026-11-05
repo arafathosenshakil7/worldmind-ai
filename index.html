@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101827">
-  <meta name="description" content="WorldMind AI - Your Intelligent AI Assistant">
-  <title>WorldMind AI</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f1827">
+<title>WorldMind AI - Your Intelligent AI Assistant</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <header class="header">
-    <div class="logo">🌍 WorldMind AI</div>
-    <p>Your Intelligent AI Assistant</p>
-  </header>
+
+<header class="header">
+  <div class="logo">🌍 WorldMind AI</div>
+  <p>Your Intelligent AI Assistant</p>
+  <button id="menuBtn">☰</button>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <button id="newChatBtn">+ New Chat</button>
+    <div id="chatList"></div>
+    <button id="settingsBtn">⚙️ Settings</button>
+  </aside>
 
   <main class="container">
     <section class="welcome">
@@ -21,53 +28,47 @@
       <p>Your smart companion for learning, ideas, and knowledge.</p>
     </section>
 
+    <section class="dashboard">
+      <div class="dash-card">💬 মোট চ্যাট: <b id="totalChats">0</b></div>
+      <div class="dash-card">📝 মোট মেসেজ: <b id="totalMsgs">0</b></div>
+      <div class="dash-card">🌐 ভাষা: <b>Auto (বাংলা / English)</b></div>
+    </section>
+
     <section class="chat-section">
       <h2>AI Chat</h2>
-
-      <div id="chatMessages" class="chat-messages">
-        <div class="message bot">
-          Hello! Welcome to WorldMind AI. How can I help you?
-        </div>
-      </div>
-
+      <div id="chatMessages" class="chat-messages"></div>
       <form id="chatForm" class="chat-form">
-        <input
-          type="text"
-          id="userInput"
-          placeholder="Type your message..."
-          autocomplete="off"
-          required
-        >
+        <input type="text" id="userInput" placeholder="Type your message... বাংলায় বা English এ লিখো" autocomplete="off" required>
         <button type="submit">Send</button>
       </form>
     </section>
 
     <section class="features">
       <h2>Our Features</h2>
-
       <div class="feature-grid">
-        <div class="feature-card">
-          <h3>💬 AI Chat</h3>
-          <p>Chat with your intelligent assistant.</p>
-        </div>
-
-        <div class="feature-card">
-          <h3>📚 Knowledge</h3>
-          <p>Explore ideas and learn new things.</p>
-        </div>
-
-        <div class="feature-card">
-          <h3>⚡ Smart Tools</h3>
-          <p>Discover helpful digital tools.</p>
-        </div>
+        <div class="feature-card"><h3>🤖 AI Chat</h3><p>Chat with your intelligent assistant.</p></div>
+        <div class="feature-card"><h3>📚 Knowledge</h3><p>Explore and learn new things.</p></div>
+        <div class="feature-card"><h3>⚡ Smart Tools</h3><p>Discover helpful digital tools.</p></div>
       </div>
     </section>
   </main>
+</div>
 
-  <footer>
-    <p>© 2026 WorldMind AI. All rights reserved.</p>
-  </footer>
+<div id="settingsModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Settings</h3>
+    <label>থিম
+      <select id="themeSelect">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+      </select>
+    </label>
+    <button id="clearAllBtn">সব Chat মুছে ফেলো</button>
+    <button id="closeSettings">Close</button>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<footer><p>© 2026 WorldMind AI. All rights reserved.</p></footer>
+<script src="script.js"></script>
 </body>
-  </html>
+</html>
